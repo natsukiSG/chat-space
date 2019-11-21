@@ -3,8 +3,8 @@
 ## groups_usersテーブル
 |Column|Type|Options|
 |------|----|-------|
-|user_id|reference|null: false, foreign_key: true|
-|group_id|reference|null: false, foreign_key: true|
+|user_id|references|null: false, foreign_key: true|
+|group_id|references|null: false, foreign_key: true|
 
 ### Association
 - belongs_to :group
@@ -13,31 +13,32 @@
 ## usersテーブル
 |Column|Type|Options|
 |------|----|-------|
-|email|string|null: false|
-|password|string|null: false|
-|username|string|null: false|
+|email|string|null: false,unique :true|
+|name|string|null: false,unique :true|
 ### Association
-- has_many :tweets
 - has_many :messages
+- has_many :group_users
+- has_many :group, through::group_users
 ------------------------------
 ## groupsテーブル
 |Column|Type|Options|
 |------|----|-------|
-|group|reference|null: false, foreign_key: true|
-|user|reference|null: false, foreign_key: true|
-|id|integrer|null: false|
+|name|string|null: false, unique :true, index|
 
 ### Association
-has_many: users
+- has_many :messages
+- has_many :group_users
+- has_many :users through::group_users
 ------------------------------
 ## messagesテーブル
 |Column|Type|Options|
 |------|----|-------|
-|text|text|null: false, foreign_key: true|
+|body|text||
 |user_id|integer|null: false, foreign_key: true|
-|image|integer|null: false|
-|group_id|integer|null: false|
+|image|integer||
+|group_id|integer|null: false, foreign_key: true|
 
 ### Association
 - belongs_to :user
+- belongs_to :group
 ------------------------------
